@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Arnabold's Notes - Site worflow</title>
+        <title>Arnabold's Notes - Site workflow</title>
         <link rel="stylesheet" href="../css/default.css" />
     </head>
     <body>
@@ -21,7 +21,7 @@
         </div>
 
         <div id="content">
-            <h1>Site worflow</h1>
+            <h1>Site workflow</h1>
             <div class="info">
     Posted on November 21, 2017
     
@@ -31,18 +31,29 @@
 
 <p>References:</p>
 <ul>
-<li><a href="https://www.stackbuilders.com/news/dr-hakyll-create-a-github-page-with-hakyll-and-circleci">DR. HAKYLL: CREATE A GITHUB PAGE WITH HAKYLL AND CIRCLECI</a></li>
 <li><a href="https://jaspervdj.be/hakyll/tutorials/01-installation.html">Installation</a></li>
+<li><a href="https://www.stackbuilders.com/news/dr-hakyll-create-a-github-page-with-hakyll-and-circleci">DR. HAKYLL: CREATE A GITHUB PAGE WITH HAKYLL AND CIRCLECI</a></li>
 </ul>
 <h1 id="configure-git-and-github">Configure Git and GitHub</h1>
-<p>A github repository named <a href="https://arnabold.github.io/">arnabold.github.io</a> . The <code>master</code> branch is used by github to publish your site. The idea is to have a <code>continuous
-integration service</code> to do that for you.</p>
-<p>Create an <code>orphan</code> branch named <code>hakyll</code> for the source of your site. The <code>hakyll</code> branch will contain your site configuration and content.</p>
+<p>GitHub uses the <code>master</code> branch to publish user sites. To create a <em>user or organization site</em></p>
+<ul>
+<li>From github site create a repository named with username (i.e.: <a href="https://arnabold.github.io/">arnabold.github.io</a>)</li>
+<li><p>Initialize the local repository, commit and push an empty master branch</p>
+<pre class="shell"><code>$ mkdir arnabold.github.io
+$ cd arnabold.github.io
+$ git init
+$ git commit --allow-empty -m &quot;Create master branch&quot;
+$ git remote add origin git@github.com:arnabold/arnabold.github.io.git
+$ git push -u origin master
+</code></pre></li>
+<li><p>Create an <code>orphan</code> branch named <code>hakyll</code>. The <code>hakyll</code> branch will contain the source of your site: configuration and content.</p>
 <pre class="shell"><code>
 $ git checkout --orphan hakyll
 # Switched to a new branch 'hakyll'
 
-</code></pre>
+</code></pre></li>
+</ul>
+<h2 id="todo-the-idea-is-to-have-a-continuous-integration-service-to-automate-the-workflow.">TODO The idea is to have a <code>continuous integration service</code> to automate the workflow.</h2>
 <p>Add your github repository as a git <code>submodule</code> at <code>_site</code></p>
 <pre class="shell"><code>
 $ git submodule add git@github.com:arnabold/arnabold.github.io.git _site
