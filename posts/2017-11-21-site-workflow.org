@@ -1,27 +1,46 @@
 ---
-title: Site worflow
+title: Site workflow
 author: arnabold
 ---
 
 References:
-  + [[https://www.stackbuilders.com/news/dr-hakyll-create-a-github-page-with-hakyll-and-circleci][DR. HAKYLL: CREATE A GITHUB PAGE WITH HAKYLL AND CIRCLECI]]
   + [[https://jaspervdj.be/hakyll/tutorials/01-installation.html][Installation]]
+  + [[https://www.stackbuilders.com/news/dr-hakyll-create-a-github-page-with-hakyll-and-circleci][DR. HAKYLL: CREATE A GITHUB PAGE WITH HAKYLL AND CIRCLECI]]
+
 
 * Configure Git and GitHub
 
-A github repository named [[https://arnabold.github.io/][arnabold.github.io]] . The =master= branch is
-used by github to publish your site. The idea is to have a =continuous
-integration service= to do that for you.
+GitHub uses the =master= branch to publish user sites. To create a
+/user or organization site/
+  + From github site create a repository named with username
+    (i.e.: [[https://arnabold.github.io/][arnabold.github.io]])
+  + Initialize the local repository, commit and push an empty master
+    branch
 
-Create an =orphan= branch named =hakyll= for the source of your
-site. The =hakyll= branch will contain your site configuration and content.
+    #+BEGIN_SRC shell
+      $ mkdir arnabold.github.io
+      $ cd arnabold.github.io
+      $ git init
+      $ git commit --allow-empty -m "Create master branch"
+      $ git remote add origin git@github.com:arnabold/arnabold.github.io.git
+      $ git push -u origin master
+    #+END_SRC
+ 
+  + Create an =orphan= branch named =hakyll=. The =hakyll= branch will
+    contain the source of your site: configuration and
+    content.
 
-#+BEGIN_SRC shell
+    #+BEGIN_SRC shell
 
-  $ git checkout --orphan hakyll
-  # Switched to a new branch 'hakyll'
+      $ git checkout --orphan hakyll
+      # Switched to a new branch 'hakyll'
 
-#+END_SRC
+    #+END_SRC
+
+** TODO The idea is to have a =continuous integration service= to automate the workflow.
+
+
+
 
 Add your github repository as a git =submodule= at =_site=
 
