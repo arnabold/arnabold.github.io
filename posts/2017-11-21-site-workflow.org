@@ -1,5 +1,5 @@
 ---
-title: Site workflow
+title: Publishing Workflow
 author: arnabold
 ---
 
@@ -10,139 +10,154 @@ References:
 
 * Configure Git and GitHub
 
-GitHub uses the =master= branch to publish user sites. To create a
-/user or organization site/
-  + From github site create a repository named with username
+GitHub uses the =master= branch to publish a /user site/
+
+  + From [[https://github.com][github.com]] create a repository named =<username>.github.io=
     (i.e.: [[https://arnabold.github.io/][arnabold.github.io]])
-  + Initialize the local repository, commit and push an empty master
+
+  + Initialize the local git repository, then commit and push an empty master
     branch
 
     #+BEGIN_SRC shell
-      $ mkdir arnabold.github.io
-      $ cd arnabold.github.io
-      $ git init
-      $ git commit --allow-empty -m "Create master branch"
-      $ git remote add origin git@github.com:arnabold/arnabold.github.io.git
-      $ git push -u origin master
+    $ mkdir arnabold.github.io
+    $ cd arnabold.github.io
+    $ git init
+    $ git commit --allow-empty -m "Create master branch"
+    $ git remote add origin git@github.com:arnabold/arnabold.github.io.git
+    $ git push -u origin master
     #+END_SRC
  
-  + Create an =orphan= branch named =hakyll=. The =hakyll= branch will
-    contain the source of your site: configuration and
-    content.
+  + Create and switch to an =orphan= branch named =hakyll=. The =hakyll= branch will
+    contain the configuration and content of your site: 
+    
+    ~$ git checkout --orphan hakyll~.
+
+  + Add, commit and push the repository as a [[https://git-scm.com/book/en/v2/Git-Tools-Submodules][git submodule]] at =_site= folder
 
     #+BEGIN_SRC shell
-
-      $ git checkout --orphan hakyll
-      # Switched to a new branch 'hakyll'
-
+    $ git submodule add git@github.com:arnabold/arnabold.github.io.git _site
+    $ git commit -m "Create hakyll branch"
+    $ git push -u origin hakyll
     #+END_SRC
 
-** TODO The idea is to have a =continuous integration service= to automate the workflow.
+    Hakyll generates the site in a directory called =_site=, you can
+    use that directory to update the site published by GitHub.
 
+  + Git ignore configuration. Download =.gitignore= from [[https://github.com/github/gitignore/blob/master/Haskell.gitignore][Haskell
+    ignored files]] and add =_site/=, =_cache/= and =*~=.
 
+* Configure Hakyll project with stack
 
++ Install hakyll.
 
-Add your github repository as a git =submodule= at =_site=
+  ~$ stack install hakyll~
 
-#+BEGIN_SRC shell
+  or for a specific version
 
-  $ git submodule add git@github.com:arnabold/arnabold.github.io.git _site
-  # Adding existing repo at '_site' to the index
-
-  $ git commit -m "Create hakyll branch"
-  # [hakyll (root-commit) 875635c] Create hakyll branch
-  # ...
-
-  $ git push -u origin hakyll
-  # To https://github.com/arnabold/arnabold.github.io.git
-  # * [new branch]      hakyll -> hakyll
-  # Branch hakyll set up to track remote branch hakyll from origin.
-
-#+END_SRC
-
-Hakyll generates your site in a directory called =_site=, you can use
-that directory to update the site published by GitHub.
-
-* Configure Hakyll
-
-** Hakyll installation
-
-#+BEGIN_SRC shell
-
-  $ stack install hakyll
-  # for a specific version try stack install hakyll-4.9.0.0
-
-#+END_SRC
-
-** Site development
-
-*** Haskell project initialization and build
-
-#+BEGIN_SRC shell
-
-  $ cd arnabold.github.io
-
-  $ hakyll-init .
-  # create an haskell project with some templates
-
-  $ stack init
-  # configure the haskell project to be used with stack
-  # for example setup the resolver for this project
-  # Selected resolver: nightly-2016-11-13
-
-  $ stack build
+  ~$ stack install hakyll-4.9.0.0~
   
-#+END_SRC
++ Hakyll project initialization.
 
-*** Hakyll project build 
+  #+BEGIN_SRC shell
+  $ cd arnabold.github.io
+  $ hakyll-init .
+  $ stack init
+  $ stack build
+  #+END_SRC
 
-#+BEGIN_SRC shell
-
-  $ stack exec site build
-  # build the site
-  # use it when you just made changes to the contents of your website
-
-  $ stack exec site clean
-  # clean the site and removes the generated directories site and cache
-
-  $ stack exec site rebuild
-  # clean and build
-  # If you made changes to site.hs, you need to recompile it followed by a rebuild
-
-#+END_SRC
-
-Project layout:
+  Project layout:
   - =_site= contains your site as HTML files, ready to be deployed
   - =_cache= is used internally by Hakyll 
 
-*** Hakyll project run
++ Hakyll project build. Use it when you just made changes to the
+  contents of your website. It affects the generation of =_site= and
+  =_cache= folders
 
-#+BEGIN_SRC shell
+  #+BEGIN_SRC shell
+  $ stack exec site build
+  $ stack exec site clean
+  $ stack exec site rebuild
+  #+END_SRC
 
-  $ stack exec site watch
-  # Listening on http://127.0.0.1:8000
-  # Ctrl-C to kill the server 
+  If you made changes to =site.hs=, you need to recompile it followed
+  by a rebuild
 
-#+END_SRC
+  #+BEGIN_SRC shell
+  $ stack build
+  $ stack exec site rebuild
+  #+END_SRC
 
++ Hakyll project run.
 
-** Git ignore configuration
-Take =.gitignore= from [[https://github.com/github/gitignore/blob/master/Haskell.gitignore][Haskell ignored files]] and add =_site= and
-=_cache= and =*~=
+  ~$ stack exec site watch~
 
-** Commit and push
+  Hakyll is listening on =http://127.0.0.1:8000=. Use =Ctrl-C= to kill the server.
 
-#+BEGIN_SRC shell
++ Hakyll project commit and push
 
+  #+BEGIN_SRC shell
   $ git add --all
   $ git commit -m "Configure Hakyll"
-
-#+END_SRC
-
-While waiting until =CircleCI= is configured 
-
-#+BEGIN_SRC shell
-
   $ git push origin hakyll
+  #+END_SRC
 
-#+END_SRC
+* Publishing worflow
+
+** TODO The idea is to have a =continuous integration service= like =CircleCI= to automate the publishing workflow.
+
+** Manual workflow
+
+After commiting all the staged changes, (while in the hakyll branch)
+
++ Uupdate the /stack package index/
+
+  ~$ stack update~ 
+
++ Build the hakyll project 
+
+  ~$ stack build~
+
++ Initilize and update the submodule recorded in the index
+
+  #+BEGIN_SRC shell
+  $ git submodule init
+  $ git submodule update
+  #+END_SRC
+
++ Generate the site, after updating the =_site= folder  in the working
+  tree
+
+  #+BEGIN_SRC shell
+  $ (cd _site && git checkout master)
+  $ stack exec site build
+  #+END_SRC
+
++ Commit and push all changes in =_site= to =master= branch using the
+  current date and time as reference in the commit message.
+
+  #+BEGIN_SRC 
+  $ (cd _site && git status)
+  $ (cd _site && git add --all)
+  $ (cd _site && git commit -m "Update (`date '+%F %T %Z'`)")
+  $ (cd _site && git push origin master)
+  #+END_SRC
+
++ Update the submodule in the hakyll branch. Hakyll branch has a
+  static reference to a commit in the master branch. hakyll branch
+  must be  update to to point to the latest commit.
+  
+  #+BEGIN_SRC 
+  $ git status
+  $ git add _site
+  $ git commit -m "Update _site (`date '+%F %T %Z'`)"
+  $ git push origin hakyll
+  #+END_SRC
+
+
+
+
+
+
+
+
+
