@@ -1,0 +1,62 @@
+/* CSS layout is mostly based on the box model. Each box taking up space on 
+your page has properties like:
+- padding, the space around the content. 
+- border, the solid line that is just outside the padding.
+- margin, the space around the outside of the border.
+Three boxes sat inside one another. From outside to in they are labelled margin, border and padding
+*/
+
+/* select elements, and set styles 
+selector {
+  peroperty: property-value;
+}
+*/
+
+html {
+  font-size: 10px; /* px means "pixels": the base font size is now 10 pixels high */
+  font-family: 'Open Sans', sans-serif; /* this should be the rest of the output you got from Google Fonts */
+  background-color: #00539F; /* Changing the page color */
+}
+
+body {
+  width: 600px; /* This forces the body to always be 600 pixels wide. */
+  padding: 0 20px 20px 20px; /* The goal is to put some space around the 
+  content. In this example, there is no padding on the top of the body, and 20 
+  pixels on the right, bottom and left. The values set top, right, bottom, left, 
+  in that order. */
+  border: 5px solid black; /* This sets values for the width, style and color 
+  of the border. In this case, it's a five-pixel–wide, solid black border, 
+  on all sides of the body. */
+  margin: 0 auto; /* When you set two values on a property like margin or padding, 
+  the first value affects the element's top and bottom side; the second value 
+  affects the left and right side. (Here, auto is a special value that divides 
+  the available horizontal space evenly between left and right). */
+  background-color: #FF9500; /* This sets the element's background color. */
+}
+
+h1 {
+  font-size: 60px;
+  text-align: center;
+  padding: 20px 0;
+  margin: 0;  
+  color: #00539F;
+  text-shadow: 3px 3px 1px black;
+}
+
+p, li {
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 1px;
+}
+
+/* We center the image to make it look better. We could use the margin: 0 auto 
+trick again as we did for the body. But there are differences that require an 
+additional setting to make the CSS work. The <body> is a block element, meaning 
+it takes up space on the page. The margin applied to a block element will be 
+respected by other elements on the page. In contrast, images are inline 
+elements, for the auto margin trick to work on this image, we must give it 
+block-level behavior using display: block;. */
+img {
+  display: block;
+  margin: 0 auto;
+}
