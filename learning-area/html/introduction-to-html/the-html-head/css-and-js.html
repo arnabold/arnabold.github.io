@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Meta examples</title>
+
+  <meta name="author" content="Chris Mills">
+  <meta name="description" content="This is an example page to demonstrate usage of metadata on web pages.">
+
+  <meta property="og:image" content="https://developer.mozilla.org/mdn-social-share.png">
+  <meta property="og:description" content="This is an example page to demonstrate usage of metadata on web pages.">
+  <meta property="og:title" content="Metadata; The HTML &lt;head&gt;, on MDN">
+
+  <link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- The <link> element should always go inside the head of your document. 
+   This takes two attributes, rel="stylesheet", which indicates that it is the 
+   document's stylesheet, and href, which contains the path to the stylesheet 
+   file -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- The <script> element should also go into the head, and should include a 
+    src attribute containing the path to the JavaScript you want to load, and 
+    defer, which basically instructs the browser to load the JavaScript after 
+    the page has finished parsing the HTML. 
+    This is useful as it makes sure that the HTML is all loaded before the 
+    JavaScript runs, so that you don't get errors resulting from JavaScript 
+    trying to access an HTML element that doesn't exist on the page yet. -->
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <h1>Meta examples</h1>
+  <p>Japanese example: ご飯が熱い。</p>
+</body>
+
+</html>
